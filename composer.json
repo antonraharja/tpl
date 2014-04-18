@@ -1,0 +1,22 @@
+{
+    "name": "antonraharja/tpl",
+    "description": "Dead simple PHP template engine",
+    "keywords": ["template", "tpl", "layout"],
+    "homepage": "http://github.com/antonraharja/tpl",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Anton Raharja",
+            "email": "antonrd@gmail.com",
+            "homepage": "http://antonraharja.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Antonraharja\\": "src/"
+        }
+    }
+}
