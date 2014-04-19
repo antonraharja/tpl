@@ -99,13 +99,16 @@ class Tpl
 	
 	/**
 	 * Set content from file
-	 * @param string $filename Filename
 	 */
-	private function _setContentFromFile($filename = '') {
-		$this->_content = '';
-		if ($filename) {
+	private function _setContentFromFile() {
+		// empty original template content
+		$this->setContent('');
+
+		// check for template file and load it
+		if ($filename = $this->getTemplate()) {
 			if (file_exists($filename)) {
-				$this->_content = trim(file_get_contents($this->_filename));
+				$content = trim(file_get_contents($this->_filename));
+				$this->setContent($content);
 			}
 		}
 	}
@@ -139,8 +142,11 @@ class Tpl
 				empty($this->vars);
 			}
 			
-			if (isset($tpl['inject'])) {
-				extract($tpl['inject']);
+			if (is_array($this->injects)) {
+				foreach ($this->injects as $inject) {
+					global ${$inject};
+				}
+				extract($this->injects);
 			}
 		}
 		
@@ -193,19 +199,18 @@ class Tpl
 	 */
 	function compile() {
 
-		// if no setTemplate() then use default template file
-		if (! $this->_filename) {
-			$this->_filename = $this->dir_template . '/' . $this->name . '.html';			
-		}
+		// if no setContent() then load the from file
+		if (! $this->getContent()) {
 
-		if (file_exists($this->_filename)) {
-
-			// if no setContent() then load the from file
-			if (! $this->_content) {
-				$this->_setContentFromFile($this->_filename);				
+			// if no setTemplate() then use default template file
+			if (! $this->getTemplate()) {
+				$this->setTemplate($this->dir_template . '/' . $this->name . '.html');
 			}
-			$this->_compile();
+
+			$this->_setContentFromFile();
 		}
+
+		$this->_compile();
 	}
 	
 	/**
