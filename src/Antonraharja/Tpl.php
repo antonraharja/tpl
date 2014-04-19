@@ -48,6 +48,9 @@ class Tpl
 	public $ifs = array();
 	public $loops = array();
 	public $injects = array();
+
+
+	// private methods
 	
 	/**
 	 * Template string manipulation
@@ -66,6 +69,7 @@ class Tpl
 	private function _setArray($key, $val) {
 		preg_match("/<loop\." . $key . ">(.*?)<\/loop\." . $key . ">/s", $this->_result, $l);
 		
+		$loop_content = '';
 		$loop = $l[1];
 		foreach ($val as $v) {
 			$loop_replaced = $loop;
@@ -107,17 +111,9 @@ class Tpl
 	}
 	
 	/**
-	 * Set original template content
-	 * @param string $content Original content
-	 */
-	private function _setContent($content) {
-		$this->_content = $content;
-	}
-	
-	/**
 	 * Process original content according to template rules and settings
 	 */
-	private function _apply() {
+	private function _compile() {
 		$this->_result = $this->_content;
 		
 		if ($this->_result) {
@@ -188,39 +184,54 @@ class Tpl
 			ob_end_clean();
 		}
 	}
+
+
+	// public methods
 	
 	/**
-	 * Apply template from template file
+	 * Compile template
 	 */
-	function apply() {
-		$this->_filename = $this->dir_template . '/' . $this->name . '.html';
+	function compile() {
+
+		// if no setTemplate() then use default template file
+		if (! $this->_filename) {
+			$this->_filename = $this->dir_template . '/' . $this->name . '.html';			
+		}
+
 		if (file_exists($this->_filename)) {
-			$this->_setContentFromFile($this->_filename);
-			$this->_apply();
+
+			// if no setContent() then load the from file
+			if (! $this->_content) {
+				$this->_setContentFromFile($this->_filename);				
+			}
+			$this->_compile();
 		}
 	}
 	
 	/**
-	 * Load content from certain file and apply template
-	 * @param  string $filename Filename
+	 * Set full path template file
+	 * @param string $filename Filename
 	 */
-	function applyOnFile($filename) {
+	function setTemplate($filename) {
 		$this->_filename = $filename;
-		if (file_exists($this->_filename)) {
-			$this->_setContentFromFile($this->_filename);
-			$this->_apply();
-		}
 	}
 	
 	/**
-	 * Load content from variable and apply template
-	 * @param  string $content Original content
+	 * Get full path template filename
+	 * @return string Filename
 	 */
-	function applyOnContent($content) {
-		$this->_setContent($content);
-		$this->_apply();
+	function getTemplate() {
+		return $this->_filename;
 	}
-	
+
+	/**
+	 * Set original template content
+	 * @param string $content Original content
+	 */
+	function setContent($content) {
+		$this->_content = $content;
+	}
+
 	/**
 	 * Get original template content
 	 * @return string Original content
@@ -243,13 +254,5 @@ class Tpl
 	 */
 	function getCompiled() {
 		return $this->_compiled;
-	}
-	
-	/**
-	 * Get full template filename
-	 * @return string Filename
-	 */
-	function getFilename() {
-		return $this->_filename;
 	}
 }

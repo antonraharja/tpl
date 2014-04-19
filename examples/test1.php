@@ -24,7 +24,7 @@ $tpl->loops = array(
 	),
 );
 
-$tpl->apply();
+$tpl->compile();
 
 echo "<p>Original content:</p>\n";
 echo $tpl->getContent();
