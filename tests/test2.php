@@ -4,10 +4,10 @@ include "../src/Antonraharja/Tpl.php";
 
 $tpl = new Antonraharja\Tpl;
 
-$tpl->name = 'test1';
+$tpl->name = 'dir2/test2';
 
 $tpl->vars = array(
-	'title' => 'This is test 1',
+	'title' => 'This is test 2',
 	'content' => 'This is sample content',
 );
 
