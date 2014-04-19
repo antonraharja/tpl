@@ -11,17 +11,22 @@ $tpl->vars = array(
 	'content' => 'This is sample content',
 );
 
+$tpl->ifs = array(
+	'valid' => TRUE,
+	'something' => FALSE,
+);
+
 $tpl->apply();
 
-echo "<p>Original content:\n";
+echo "<p>Original content:</p>\n";
 echo $tpl->getContent();
 
-echo "<br />\n";
+echo "<br /><br />\n\n";
 
-echo "<p>Manipulated content:\n";
+echo "<p>Manipulated content:</p>\n";
 echo $tpl->getResult();
 
-echo "<br />\n";
+echo "<br /><br />\n\n";
 
-echo "<p>Compiled content:\n";
+echo "<p>Compiled content:</p>\n";
 echo $tpl->getCompiled();

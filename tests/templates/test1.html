@@ -1,5 +1,15 @@
 <div>
+
 <p>Title: {title}</p>
 <p>Content: {content}</p>
 <p>Data: {{ echo "This is data"; }}</p>
+
+<if.valid>
+<p>This content shown only when <strong>if.valid</strong> is TRUE</p>
+</if.valid>
+
+<if.something>
+<p>This content will NOT be shown because <strong>if.something</strong> is FALSE</p>
+</if.something>
+
 </div>

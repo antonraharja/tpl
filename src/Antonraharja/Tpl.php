@@ -30,6 +30,7 @@ namespace Antonraharja;
  * Dead simple PHP template engine
  *
  * @author Anton Raharja
+ * @link https://github.com/antonraharja/tpl
  */
 class Tpl
 {
@@ -47,17 +48,6 @@ class Tpl
 	public $ifs = array();
 	public $loops = array();
 	public $injects = array();
-
-	/**
-	 * Sanitize template name
-	 */
-	private function _sanitizeName() {
-		$this->name = str_replace('..', '', $this->name);
-		$this->name = str_replace('|', '', $this->name);
-		$this->name = str_replace('"', '', $this->name);
-		$this->name = str_replace("'", '', $this->name);
-		$this->name = str_replace("\\", '/', $this->name);
-	}
 	
 	/**
 	 * Template string manipulation
@@ -104,16 +94,30 @@ class Tpl
 	}
 	
 	/**
-	 * Actual template apply
+	 * Set content from file
+	 * @param string $filename Filename
+	 */
+	private function _setContentFromFile($filename = '') {
+		$this->_content = '';
+		if ($filename) {
+			if (file_exists($filename)) {
+				$this->_content = trim(file_get_contents($this->_filename));
+			}
+		}
+	}
+	
+	/**
+	 * Set original template content
+	 * @param string $content Original content
+	 */
+	private function _setContent($content) {
+		$this->_content = $content;
+	}
+	
+	/**
+	 * Process original content according to template rules and settings
 	 */
 	private function _apply() {
-		foreach ($this->injects as $global_var) {
-			global $ {
-				$global_var
-			};
-		}
-		
-		$this->_content = trim(file_get_contents($this->_filename));
 		$this->_result = $this->_content;
 		
 		if ($this->_result) {
@@ -186,27 +190,37 @@ class Tpl
 	}
 	
 	/**
-	 * Apply template
+	 * Apply template from template file
 	 */
 	function apply() {
-		$continue = FALSE;
-		
-		$this->_sanitizeName();
-
 		$this->_filename = $this->dir_template . '/' . $this->name . '.html';
 		if (file_exists($this->_filename)) {
+			$this->_setContentFromFile($this->_filename);
 			$this->_apply();
 		}
 	}
-
+	
 	/**
-	 * Get full template filename
-	 * @return string Filename
+	 * Load content from certain file and apply template
+	 * @param  string $filename Filename
 	 */
-	function getFilename() {
-		return $this->_filename;
+	function applyOnFile($filename) {
+		$this->_filename = $filename;
+		if (file_exists($this->_filename)) {
+			$this->_setContentFromFile($this->_filename);
+			$this->_apply();
+		}
 	}
-
+	
+	/**
+	 * Load content from variable and apply template
+	 * @param  string $content Original content
+	 */
+	function applyOnContent($content) {
+		$this->_setContent($content);
+		$this->_apply();
+	}
+	
 	/**
 	 * Get original template content
 	 * @return string Original content
@@ -214,7 +228,7 @@ class Tpl
 	function getContent() {
 		return $this->_content;
 	}
-
+	
 	/**
 	 * Get manipulated template content
 	 * @return string Manipulated content
@@ -222,12 +236,20 @@ class Tpl
 	function getResult() {
 		return $this->_result;
 	}
-
+	
 	/**
 	 * Get compiled template content
 	 * @return string Compiled content
 	 */
 	function getCompiled() {
 		return $this->_compiled;
+	}
+	
+	/**
+	 * Get full template filename
+	 * @return string Filename
+	 */
+	function getFilename() {
+		return $this->_filename;
 	}
 }
