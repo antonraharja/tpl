@@ -6,8 +6,8 @@ Dead simple PHP template engine
 Information      | Description
 ---------------- | ----------------
 Author           | Anton Raharja
-Version          | 1.0.1
-Release date     | 140419
+Version          | 1.0.2
+Release date     | 140421
 
 For usage instruction and examples please see **examples** folder.
 
