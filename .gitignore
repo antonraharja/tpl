@@ -14,3 +14,5 @@ nbproject
 
 # This is used by the documentation generator
 venv
+
+examples/cache/
