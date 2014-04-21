@@ -16,9 +16,9 @@ $tpl->injects = array('all_fruits');
 $content = '
 	<div>
 		<h1>TEST 3</h1>
-		<p>Title: {title}</p>
-		<p>Content: {content}</p>
-		<p>Data: {{ echo "Fruits: ".$all_fruits; }}</p>
+		<p>Title: {{ title }}</p>
+		<p>Content: {{ content }}</p>
+		<p>Data: {{ "Fruits: " . $all_fruits }}</p>
 	</div>
 ';
 

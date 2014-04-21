@@ -40,6 +40,7 @@ class Tpl
 	private $_result;
 	private $_compiled;
 	
+	public $echo = 'echo';
 	public $dir_template = './templates';
 	public $dir_cache = './cache';
 	
@@ -48,9 +49,10 @@ class Tpl
 	public $ifs = array();
 	public $loops = array();
 	public $injects = array();
-
-
+	
 	// private methods
+	
+	
 	
 	/**
 	 * Template string manipulation
@@ -58,7 +60,7 @@ class Tpl
 	 * @param  string $val     Template value
 	 */
 	private function _setString($key, $val) {
-		$this->_result = str_replace('{' . $key . '}', $val, $this->_result);
+		$this->_result = str_replace('{{' . $key . '}}', $val, $this->_result);
 	}
 	
 	/**
@@ -74,7 +76,7 @@ class Tpl
 		foreach ($val as $v) {
 			$loop_replaced = $loop;
 			foreach ($v as $x => $y) {
-				$loop_replaced = str_replace('{' . $key . '.' . $x . '}', $y, $loop_replaced);
+				$loop_replaced = str_replace('{{' . $key . '.' . $x . '}}', $y, $loop_replaced);
 			}
 			$loop_content.= $loop_replaced;
 		}
@@ -101,9 +103,10 @@ class Tpl
 	 * Set content from file
 	 */
 	private function _setContentFromFile() {
+		
 		// empty original template content
 		$this->setContent('');
-
+		
 		// check for template file and load it
 		if ($filename = $this->getTemplate()) {
 			if (file_exists($filename)) {
@@ -117,47 +120,55 @@ class Tpl
 	 * Process original content according to template rules and settings
 	 */
 	private function _compile() {
-		$this->_result = $this->_content;
 		
-		if ($this->_result) {
-			
-			if ($this->ifs) {
-				foreach ($this->ifs as $key => $val) {
-					$this->_setBool($key, $val);
-				}
-				empty($this->ifs);
+		// remove spaces
+		$this->_result = str_replace('{{ ', '{{', $this->_content);
+		$this->_result = str_replace(' }}', '}}', $this->_result);
+		
+		// check if
+		if ($this->ifs) {
+			foreach ($this->ifs as $key => $val) {
+				$this->_setBool($key, $val);
 			}
-			
-			if ($this->loops) {
-				foreach ($this->loops as $key => $val) {
-					$this->_setArray($key, $val);
-				}
-				empty($this->loops);
-			}
-			
-			if ($this->vars) {
-				foreach ($this->vars as $key => $val) {
-					$this->_setString($key, $val);
-				}
-				empty($this->vars);
-			}
-			
-			if (is_array($this->injects)) {
-				foreach ($this->injects as $inject) {
-					global ${$inject};
-				}
-				extract($this->injects);
-			}
+			empty($this->ifs);
 		}
 		
+		// check loop
+		if ($this->loops) {
+			foreach ($this->loops as $key => $val) {
+				$this->_setArray($key, $val);
+			}
+			empty($this->loops);
+		}
+		
+		// check static replaces
+		if ($this->vars) {
+			foreach ($this->vars as $key => $val) {
+				$this->_setString($key, $val);
+			}
+			empty($this->vars);
+		}
+		
+		// include global vars
+		if (is_array($this->injects)) {
+			foreach ($this->injects as $inject) {
+				global $ {
+					$inject
+				};
+			}
+			extract($this->injects);
+		}
+		
+		// remove if and loop traces
 		$this->_result = preg_replace("/<if\..*?>(.*?)<\/if\..*?>/s", '', $this->_result);
 		$this->_result = preg_replace("/<loop\..*?>(.*?)<\/loop\..*?>/s", '', $this->_result);
 		
+		// check dynamic variables
 		$pattern = "\{\{(.*?)\}\}";
 		preg_match_all("/" . $pattern . "/", $this->_result, $matches, PREG_SET_ORDER);
 		foreach ($matches as $block) {
 			$chunk = $block[0];
-			$codes = '<?php ' . trim($block[1]) . ' ?>';
+			$codes = '<?php ' . $this->echo . '(' . trim($block[1]) . ')' . '; ?>';
 			$this->_result = str_replace($chunk, $codes, $this->_result);
 		}
 		
@@ -190,26 +201,27 @@ class Tpl
 			ob_end_clean();
 		}
 	}
-
-
+	
 	// public methods
+	
+	
 	
 	/**
 	 * Compile template
 	 */
 	function compile() {
-
+		
 		// if no setContent() then load the from file
-		if (! $this->getContent()) {
-
+		if (!$this->getContent()) {
+			
 			// if no setTemplate() then use default template file
-			if (! $this->getTemplate()) {
+			if (!$this->getTemplate()) {
 				$this->setTemplate($this->dir_template . '/' . $this->name . '.html');
 			}
-
+			
 			$this->_setContentFromFile();
 		}
-
+		
 		$this->_compile();
 	}
 	
@@ -228,7 +240,7 @@ class Tpl
 	function getTemplate() {
 		return $this->_filename;
 	}
-
+	
 	/**
 	 * Set original template content
 	 * @param string $content Original content
@@ -236,7 +248,7 @@ class Tpl
 	function setContent($content) {
 		$this->_content = $content;
 	}
-
+	
 	/**
 	 * Get original template content
 	 * @return string Original content

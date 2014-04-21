@@ -2,6 +2,8 @@
 
 include "../src/Antonraharja/Tpl.php";
 
+$the_data = 'This is the data';
+
 $tpl = new Antonraharja\Tpl;
 
 $tpl->name = 'dir2/test2';
@@ -23,6 +25,8 @@ $tpl->loops = array(
 		array('color' => 'Blue',  'hex' => '#0000FF'),
 	),
 );
+
+$tpl->injects = array('the_data');
 
 $tpl->compile();
 
