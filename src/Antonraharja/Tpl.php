@@ -162,7 +162,7 @@ class Tpl
 		}
 		
 		// attempt to create cache file for this template in storage directory
-		$cache_file = md5($this->_filename . mktime()) . '.compiled';
+		$cache_file = md5($this->_filename) . '.compiled';
 		$cache = $this->dir_cache . '/' . $cache_file;
 		$fd = @fopen($cache, 'w+');
 		@fwrite($fd, $this->_result);
