@@ -204,6 +204,8 @@ class Tpl
 	
 	// public methods
 	
+	
+	
 	/**
 	 * Set template name
 	 * @param string $name Name
@@ -213,7 +215,7 @@ class Tpl
 		$this->name = $name;
 		
 		return $this;
-	}	
+	}
 	
 	/**
 	 * Set template static variables
@@ -226,7 +228,7 @@ class Tpl
 		}
 		
 		return $this;
-	}	
+	}
 	
 	/**
 	 * Set template logic rules
@@ -239,7 +241,7 @@ class Tpl
 		}
 		
 		return $this;
-	}	
+	}
 	
 	/**
 	 * Set template loop rules
@@ -252,7 +254,7 @@ class Tpl
 		}
 		
 		return $this;
-	}	
+	}
 	
 	/**
 	 * Set template injected global variables
@@ -265,7 +267,7 @@ class Tpl
 		}
 		
 		return $this;
-	}	
+	}
 	
 	/**
 	 * Compile template
