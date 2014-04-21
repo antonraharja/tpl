@@ -1,10 +1,10 @@
 <?php
 
-include "../src/Antonraharja/Tpl.php";
+include "../src/Playsms/Tpl.php";
 
 $the_data = 'This is the data';
 
-$tpl = new Antonraharja\Tpl;
+$tpl = new Playsms\Tpl;
 
 $tpl->name = 'dir2/test2';
 

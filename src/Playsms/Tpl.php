@@ -24,7 +24,7 @@
  * THE SOFTWARE.
 */
 
-namespace Antonraharja;
+namespace Playsms;
 
 /**
  * Dead simple PHP template engine

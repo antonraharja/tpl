@@ -1,10 +1,10 @@
 <?php
 
-include "../src/Antonraharja/Tpl.php";
+include "../src/Playsms/Tpl.php";
 
 $all_fruits = 'Apple, Banana and Orange';
 
-$tpl = new Antonraharja\Tpl;
+$tpl = new Playsms\Tpl;
 
 $tpl->vars = array(
 	'title' => 'This is test 3',

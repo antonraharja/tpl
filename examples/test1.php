@@ -1,8 +1,8 @@
 <?php
 
-include "../src/Antonraharja/Tpl.php";
+include "../src/Playsms/Tpl.php";
 
-$tpl = new Antonraharja\Tpl;
+$tpl = new Playsms\Tpl;
 
 $tpl->name = 'test1';
 
