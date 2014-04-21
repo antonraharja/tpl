@@ -5,9 +5,11 @@ Version 1.0.2
 -------------
 
 * Change tpl tags from { ... } to {{ ... }}
+* Change dynamic vars to allow only ready variables for an echo
 * update _compile()
 * update namespace from Antonraharja to Playsms
-* Change dynamic vars to allow only ready variables for an echo
+* add setName() setVars() setIfs() setLoops() setInjects()
+* add return $this on most public methods
 
 Version 1.0.1
 -------------
