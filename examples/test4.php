@@ -6,15 +6,12 @@ $all_fruits = 'Apple, Banana and Orange';
 
 $tpl = new Playsms\Tpl;
 
-$tpl->vars = array(
+$tpl->setVars(array(
 	'title' => 'This is test 3',
 	'content' => 'This is sample content',
-);
-
-$tpl->injects = array('all_fruits');
-
-$tpl->setTemplate('./templates/test4.html');
-
-$tpl->compile();
+))
+->setInjects(array('all_fruits'))
+->setTemplate('./templates/test4.html')
+->compile();
 
 echo $tpl->getCompiled();

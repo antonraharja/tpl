@@ -204,10 +204,72 @@ class Tpl
 	
 	// public methods
 	
+	/**
+	 * Set template name
+	 * @param string $name Name
+	 * @return mixed Tpl object
+	 */
+	function setName($name) {
+		$this->name = $name;
+		
+		return $this;
+	}	
 	
+	/**
+	 * Set template static variables
+	 * @param array $vars Variables
+	 * @return mixed Tpl object
+	 */
+	function setVars($vars) {
+		if (is_array($vars)) {
+			$this->vars = $vars;
+		}
+		
+		return $this;
+	}	
+	
+	/**
+	 * Set template logic rules
+	 * @param array $ifs IF logic rules
+	 * @return mixed Tpl object
+	 */
+	function setIfs($ifs) {
+		if (is_array($ifs)) {
+			$this->ifs = $ifs;
+		}
+		
+		return $this;
+	}	
+	
+	/**
+	 * Set template loop rules
+	 * @param array $loops Loop rules
+	 * @return mixed Tpl object
+	 */
+	function setLoops($loops) {
+		if (is_array($loops)) {
+			$this->loops = $loops;
+		}
+		
+		return $this;
+	}	
+	
+	/**
+	 * Set template injected global variables
+	 * @param array $injects List of injected global variables
+	 * @return mixed Tpl object
+	 */
+	function setInjects($injects) {
+		if (is_array($injects)) {
+			$this->injects = $injects;
+		}
+		
+		return $this;
+	}	
 	
 	/**
 	 * Compile template
+	 * @return mixed Tpl object
 	 */
 	function compile() {
 		
@@ -223,14 +285,19 @@ class Tpl
 		}
 		
 		$this->_compile();
+		
+		return $this;
 	}
 	
 	/**
 	 * Set full path template file
 	 * @param string $filename Filename
+	 * @return mixed Tpl object
 	 */
 	function setTemplate($filename) {
 		$this->_filename = $filename;
+		
+		return $this;
 	}
 	
 	/**
@@ -244,9 +311,12 @@ class Tpl
 	/**
 	 * Set original template content
 	 * @param string $content Original content
+	 * @return mixed Tpl object
 	 */
 	function setContent($content) {
 		$this->_content = $content;
+		
+		return $this;
 	}
 	
 	/**
