@@ -9,8 +9,29 @@ Author           | Anton Raharja
 Version          | 1.0.2
 Release date     | 140421
 
-Examples
---------
+
+Install
+-------
+
+Using composer by providing or editing `composer.json`.
+
+Minimum `composer.json`:
+
+```
+{
+	"require": {
+		"playsms/tpl": "1.*"
+	}
+}
+```
+
+More information about composer can be found at its website https://getcomposer.org
+
+This package can also be installed without composer. You can simply include the `src/Playsms/Tpl.php`.
+
+
+Usage example
+-------------
 
 An example template file `the_page.html`:
 
@@ -31,7 +52,7 @@ require 'vendor/autoload.php';
 
 $data = 'THE DATA HERE';
 
-$tpl = new Playsms\Tpl;
+$tpl = new \Playsms\Tpl;
 
 $tpl->setTemplate('the_page');
 
