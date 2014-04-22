@@ -40,15 +40,26 @@ class Tpl
 	private $_result;
 	private $_compiled;
 	
-	public $echo = 'echo';
-	public $dir_template = './templates';
-	public $dir_cache = './cache';
+	public $config = array();
 	
 	public $name;
 	public $vars = array();
 	public $ifs = array();
 	public $loops = array();
 	public $injects = array();
+
+	/**
+	 * Constructor
+	 * @param array $config Default configuration
+	 */
+	function __construct($config = array()) {
+		$default = array(
+			'echo' => 'echo',
+			'dir_template' => './templates',
+			'dir_cache' => './cache',
+		);
+		$this->config = array_merge($default, $config);
+	}
 	
 	// private methods
 	
@@ -168,13 +179,13 @@ class Tpl
 		preg_match_all("/" . $pattern . "/", $this->_result, $matches, PREG_SET_ORDER);
 		foreach ($matches as $block) {
 			$chunk = $block[0];
-			$codes = '<?php ' . $this->echo . '(' . trim($block[1]) . ')' . '; ?>';
+			$codes = '<?php ' . $this->config['echo'] . '(' . trim($block[1]) . ')' . '; ?>';
 			$this->_result = str_replace($chunk, $codes, $this->_result);
 		}
 		
 		// attempt to create cache file for this template in storage directory
 		$cache_file = md5($this->_filename) . '.compiled';
-		$cache = $this->dir_cache . '/' . $cache_file;
+		$cache = $this->config['dir_cache'] . '/' . $cache_file;
 		$fd = @fopen($cache, 'w+');
 		@fwrite($fd, $this->_result);
 		@fclose($fd);
@@ -205,6 +216,28 @@ class Tpl
 	// public methods
 	
 	
+
+	/**
+	 * Set configuration
+	 * - echo         : PHP display/print command
+	 * - dir_template : Template files path
+	 * - dir_cache    : Compiled files path
+	 * @param array $config Default configuration
+	 * @return mixed Tpl object
+	 */
+	public function setConfig($config) {
+		$this->config = array_merge($this->config, $config);
+		
+		return $this;
+	}
+	
+	/**
+	 * Get configuration
+	 * @return array Default configuration
+	 */
+	public function getConfig() {
+		return $this->config;
+	}
 	
 	/**
 	 * Set template name
@@ -280,7 +313,7 @@ class Tpl
 			
 			// if no setTemplate() then use default template file
 			if (!$this->getTemplate()) {
-				$this->setTemplate($this->dir_template . '/' . $this->name . '.html');
+				$this->setTemplate($this->config['dir_template'] . '/' . $this->name . '.html');
 			}
 			
 			$this->_setContentFromFile();
