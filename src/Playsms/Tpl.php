@@ -34,14 +34,25 @@ namespace Playsms;
  */
 class Tpl
 {
-	
+
+	// actual template file full path
 	private $_filename;
+
+	// variables holding the content
 	private $_content;
 	private $_result;
 	private $_compiled;
+
+	// default configuration
+	private $_config_echo = 'echo';
+	private $_config_dir_template = './templates';
+	private $_config_dir_cache = './cache';
+	private $_config_extension = '.html';
 	
+	// array holding configuration
 	public $config = array();
 	
+	// template rules
 	public $name;
 	public $vars = array();
 	public $ifs = array();
@@ -54,10 +65,12 @@ class Tpl
 	 */
 	function __construct($config = array()) {
 		$default = array(
-			'echo' => 'echo',
-			'dir_template' => './templates',
-			'dir_cache' => './cache',
+			'echo' => $this->_config_echo,
+			'dir_template' => $this->_config_dir_template,
+			'dir_cache' => $this->_config_dir_cache,
+			'extension' => $this->_config_extension,
 		);
+
 		$this->config = array_merge($default, $config);
 	}
 	
@@ -219,14 +232,20 @@ class Tpl
 
 	/**
 	 * Set configuration
-	 * - echo         : PHP display/print command
-	 * - dir_template : Template files path
-	 * - dir_cache    : Compiled files path
+	 * - echo         : PHP display/print command (default: echo)
+	 * - dir_template : Template files path (default: ./templates)
+	 * - dir_cache    : Compiled files path (default: ./cache)
+	 * - extension    : File extension (default: .html)
 	 * @param array $config Default configuration
 	 */
 	public function setConfig($config) {
 		$this->config = array_merge($this->config, $config);
 		
+		$this->config['echo'] = ( $this->config['echo'] ? $this->config['echo'] : $this->_config_echo );
+		$this->config['dir_template'] = ( $this->config['dir_template'] ? $this->config['dir_template'] : $this->_config_dir_template );
+		$this->config['dir_cache'] = ( $this->config['dir_cache'] ? $this->config['dir_cache'] : $this->_config_dir_cache );
+		$this->config['extension'] = ( $this->config['extension'] ? $this->config['extension'] : $this->_config_extension );
+
 		return $this;
 	}
 	
@@ -312,7 +331,7 @@ class Tpl
 			
 			// if no setTemplate() then use default template file
 			if (!$this->getTemplate()) {
-				$this->setTemplate($this->config['dir_template'] . '/' . $this->name . '.html');
+				$this->setTemplate($this->config['dir_template'] . '/' . $this->name . $this->config['extension']);
 			}
 			
 			$this->_setContentFromFile();

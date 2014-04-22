@@ -7,6 +7,7 @@ Version 1.0.3-dev
 * remove variable echo, dir_template and dir_cache
 * add config array
 * add setConfig() getConfig()
+* add option to configure template file extension
 
 Version 1.0.2
 -------------
