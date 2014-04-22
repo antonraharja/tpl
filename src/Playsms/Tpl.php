@@ -223,7 +223,6 @@ class Tpl
 	 * - dir_template : Template files path
 	 * - dir_cache    : Compiled files path
 	 * @param array $config Default configuration
-	 * @return mixed Tpl object
 	 */
 	public function setConfig($config) {
 		$this->config = array_merge($this->config, $config);
