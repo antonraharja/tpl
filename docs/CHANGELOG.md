@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+Version 1.0.4
+-------------
+
+* fix #1 loop data contains regex syntax chars displayed incorrectly
+
 Version 1.0.3
 -------------
 
