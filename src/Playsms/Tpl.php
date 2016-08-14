@@ -105,7 +105,9 @@ class Tpl
 			$loop_content.= $loop_replaced;
 		}
 		
-		$this->_result = preg_replace("/<loop\." . $key . ">(.*?)<\/loop\." . $key . ">/s", $loop_content, $this->_result);
+		$this->_result = preg_replace("/<loop\." . $key . ">(.*?)<\/loop\." . $key . ">/s", preg_quote($loop_content), $this->_result);
+		$this->_result = stripslashes($this->_result);
+
 		$this->_result = str_replace("<loop." . $key . ">", '', $this->_result);
 		$this->_result = str_replace("</loop." . $key . ">", '', $this->_result);
 	}
