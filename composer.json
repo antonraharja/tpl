@@ -4,12 +4,12 @@
     "keywords": ["template", "tpl", "layout", "playsms"],
     "homepage": "http://github.com/antonraharja/tpl",
     "license": "MIT",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "authors": [
         {
             "name": "Anton Raharja",
-            "email": "antonrd@gmail.com",
-            "homepage": "http://antonraharja.com",
+            "email": "araharja@protonmail.com",
+            "homepage": "https://antonraharja.com",
             "role": "Developer"
         }
     ],
