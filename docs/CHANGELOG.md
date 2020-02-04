@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+Version 1.0.5
+-------------
+
+* [security] allows only a PHP variable on dynamic variables
+
 Version 1.0.4
 -------------
 
