@@ -222,18 +222,26 @@ class Tpl
 		}
 		
 		// if template cache file created then include it, else use eval() to compile
+		ob_start();
 		if (file_exists($cache)) {
-			ob_start();
 			include $cache;
-			$this->_compiled = ob_get_contents();
-			ob_end_clean();
 			@unlink($cache);
 		} else {
-			ob_start();
 			eval('?>' . $this->_result . '<?php ');
-			$this->_compiled = ob_get_contents();
-			ob_end_clean();
 		}
+		$_temp_compiled = ob_get_contents();
+		ob_end_clean();
+
+		// final check - remove unwanted templates
+		$pattern = "\{\{(.*?)\}\}";
+		preg_match_all("/" . $pattern . "/", $_temp_compiled, $matches, PREG_SET_ORDER);
+		foreach ($matches as $block) {
+			$chunk = $block[0];
+			$_temp_compiled = str_replace($chunk, '', $_temp_compiled);
+		}
+		
+		// save finals
+		$this->_compiled = $_temp_compiled;
 	}
 	
 	// public methods
