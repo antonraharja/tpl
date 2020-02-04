@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+Version 1.0.6
+-------------
+
+* [security] remove unwanted templates from final result
+
 Version 1.0.5
 -------------
 
