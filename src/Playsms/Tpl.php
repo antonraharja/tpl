@@ -194,8 +194,16 @@ class Tpl
 		preg_match_all("/" . $pattern . "/", $this->_result, $matches, PREG_SET_ORDER);
 		foreach ($matches as $block) {
 			$chunk = $block[0];
-			$codes = '<?php ' . $this->config['echo'] . '(' . trim($block[1]) . ')' . '; ?>';
-			$this->_result = str_replace($chunk, $codes, $this->_result);
+			
+			// fixme anton - allow only PHP variables
+            $block[1] = trim($block[1]);
+			if (preg_match("/^([\$][a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*[a-zA-Z0-9_\[\]\'\"\-\>]*)$/", $block[1])) {
+				$codes = '<?php ' . $this->config['echo'] . '(' . $block[1] . ')' . '; ?>';
+
+				$this->_result = str_replace($chunk, $codes, $this->_result);
+			} else {
+				$this->_result = str_replace($chunk, '', $this->_result);
+			}
 		}
 		
 		// attempt to create cache file for this template in storage directory
