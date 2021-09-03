@@ -77,6 +77,19 @@ class Tpl
 	// private methods
 	
 	
+	/**
+	 * Sanitize inputs
+	 * @param string $inputs Input contents before processing
+	 */
+	private function _sanitize($inputs) {
+		$inputs = str_ireplace('`', '', $inputs);
+		$inputs = str_ireplace('$(', '', $inputs);
+		$inputs = str_ireplace('<?php', '', $inputs);
+		$inputs = str_ireplace('<?', '', $inputs);
+		$inputs = str_ireplace('?>', '', $inputs);
+		
+		return $inputs;
+	}
 	
 	/**
 	 * Template string manipulation
@@ -84,6 +97,7 @@ class Tpl
 	 * @param  string $val     Template value
 	 */
 	private function _setString($key, $val) {
+		$val = $this->_sanitize($val);
 		$this->_result = str_replace('{{' . $key . '}}', $val, $this->_result);
 	}
 	
@@ -148,7 +162,7 @@ class Tpl
 	private function _compile() {
 		
 		// remove spaces
-		$this->_result = str_replace('{{ ', '{{', $this->_content);
+		$this->_result = str_replace('{{ ', '{{', $this->getContent());
 		$this->_result = str_replace(' }}', '}}', $this->_result);
 		
 		// check if
@@ -205,6 +219,9 @@ class Tpl
 				$this->_result = str_replace($chunk, '', $this->_result);
 			}
 		}
+		
+		// at this point $this->_result contains final manipulation ready to be included or eval-ed
+		// $this->_result
 		
 		// attempt to create cache file for this template in storage directory
 		$cache_file = md5($this->_filename) . '.compiled';
@@ -385,6 +402,7 @@ class Tpl
 	 * @return mixed Tpl object
 	 */
 	function setContent($content) {
+		$content = $this->_sanitize($content);
 		$this->_content = $content;
 		
 		return $this;

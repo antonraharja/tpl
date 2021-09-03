@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+Version 1.0.7
+-------------
+
+* [security] remove unwanted characters from content before compile
+
 Version 1.0.6
 -------------
 
