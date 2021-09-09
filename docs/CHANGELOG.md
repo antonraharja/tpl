@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+Version 1.0.8
+-------------
+
+* fix bug over sanitize causing javascript issue
+
 Version 1.0.7
 -------------
 
