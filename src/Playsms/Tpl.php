@@ -83,7 +83,6 @@ class Tpl
 	 */
 	private function _sanitize($inputs) {
 		$inputs = str_ireplace('`', '', $inputs);
-		$inputs = str_ireplace('$(', '', $inputs);
 		$inputs = str_ireplace('<?php', '', $inputs);
 		$inputs = str_ireplace('<?', '', $inputs);
 		$inputs = str_ireplace('?>', '', $inputs);
